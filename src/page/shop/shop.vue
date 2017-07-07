@@ -1,28 +1,34 @@
  <template>
     <div>
         <section v-if="!showLoading" class="shop_container">
-            <nav class="goback" @click="goback">
+            <!-- <nav class="goback" @click="goback">
                 <svg width="4rem" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">
                     <polyline points="12,18 4,9 12,0" style="fill:none;stroke:rgb(255,255,255);stroke-width:3"/>
                 </svg>
-            </nav>
+            </nav> -->
             <header class="shop_detail_header" ref="shopheader" :style="{zIndex: showActivities? '14':'10'}">
-                <img :src="imgBaseUrl + shopDetailData.image_path" class="header_cover_img">
+                <!-- <img :src="imgBaseUrl + shopDetailData.image_path" class="header_cover_img"> -->
                 <section class="description_header">
                     <router-link to="/shop/shopDetail" class="description_top">
-                        <section class="description_left">
+                        <section class="description_left" style="border-radius: 10rem;overflow: hidden;">
                             <img :src="imgBaseUrl + shopDetailData.image_path">
                         </section>
                         <section class="description_right">
-                            <h4 class="description_title ellipsis">{{shopDetailData.name}}</h4>
-                            <p class="description_text">商家配送／{{shopDetailData.order_lead_time}}分钟送达／配送费¥{{shopDetailData.float_delivery_fee}}</p>
-                            <p class="description_promotion ellipsis">公告：{{promotionInfo}}</p>
+                            <h4 class="description_title ellipsis">您好，<br/>{{shopDetailData.name}}</h4>
+                            <!-- <p class="description_text">商家配送／{{shopDetailData.order_lead_time}}分钟送达／配送费¥{{shopDetailData.float_delivery_fee}}</p>
+                            <p class="description_promotion ellipsis">公告：{{promotionInfo}}</p> -->
                         </section>
-                        <svg width="14" height="14" xmlns="http://www.w3.org/2000/svg" version="1.1" class="description_arrow" >
+                        <section>
+                            <span class="shop_detail_vip">
+                                企业认证                            
+                            </span>
+                        </section>
+
+                        <!-- <svg width="14" height="14" xmlns="http://www.w3.org/2000/svg" version="1.1" class="description_arrow" >
                             <path d="M0 0 L8 7 L0 14"  stroke="#fff" stroke-width="1" fill="none"/>
-                        </svg>
+                        </svg> -->
                     </router-link>
-                    <footer class="description_footer" v-if="shopDetailData.activities.length" @click="showActivitiesFun">
+                    <!-- <footer class="description_footer" v-if="shopDetailData.activities.length" @click="showActivitiesFun">
                         <p class="ellipsis">
                             <span class="tip_icon" :style="{backgroundColor: '#' + shopDetailData.activities[0].icon_color, borderColor: '#' + shopDetailData.activities[0].icon_color}">{{shopDetailData.activities[0].icon_name}}</span>
                             <span>{{shopDetailData.activities[0].description}}（APP专享）</span>
@@ -31,7 +37,7 @@
                         <svg class="footer_arrow">
                             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-left"></use>
                         </svg>
-                    </footer>
+                    </footer> -->
 
                 </section>
             </header>
@@ -63,16 +69,16 @@
             </transition>
             <section class="change_show_type" ref="chooseType">
                 <div>
-                    <span :class='{activity_show: changeShowType =="food"}' @click="changeShowType='food'">商品</span>
+                    <span :class='{activity_show: changeShowType =="food"}' @click="changeShowType='food'">已订阅监测</span>
                 </div>
                 <div>
-                    <span :class='{activity_show: changeShowType =="rating"}' @click="changeShowType='rating'">评价</span>
+                    <span :class='{activity_show: changeShowType =="rating"}' @click="changeShowType='rating'">暂停监测</span>
                 </div>
             </section>
             <transition name="fade-choose">
                 <section v-show="changeShowType =='food'" class="food_container">
                     <section class="menu_container">
-                        <section class="menu_left" id="wrapper_menu" ref="wrapperMenu">
+                        <!-- <section class="menu_left" id="wrapper_menu" ref="wrapperMenu">
                             <ul>
                                 <li v-for="(item,index) in menuList" :key="index" class="menu_left_li" :class="{activity_menu: index == menuIndex}" @click="chooseMenu(index)">
                                     <img :src="getImgPath(item.icon_url)" v-if="item.icon_url">
@@ -80,11 +86,11 @@
                                     <span class="category_num" v-if="categoryNum[index]&&item.type==1">{{categoryNum[index]}}</span>
                                 </li>
                             </ul>
-                        </section>
+                        </section> -->
                         <section class="menu_right" ref="menuFoodList">
                             <ul>
                                 <li v-for="(item,index) in menuList" :key="index">
-                                    <header class="menu_detail_header">
+                                    <!-- <header class="menu_detail_header">
                                         <section class="menu_detail_header_left">
                                             <strong class="menu_item_title">{{item.name}}</strong>
                                             <span class="menu_item_description">{{item.description}}</span>
@@ -94,7 +100,7 @@
                                             <span>{{item.name}}</span>
                                             {{item.description}}
                                         </p>
-                                    </header>
+                                    </header> -->
                                     <section v-for="(foods,foodindex) in item.foods" :key="foodindex" class="menu_detail_list">
                                         <router-link  :to="{path: 'shop/foodDetail', query:{image_path:foods.image_path, description: foods.description, month_sales: foods.month_sales, name: foods.name, rating: foods.rating, rating_count: foods.rating_count, satisfy_rate: foods.satisfy_rate, foods, shopId}}" tag="div" class="menu_detail_link">
                                             <section class="menu_food_img">
@@ -105,35 +111,39 @@
                                                     <strong class="description_foodname">{{foods.name}}</strong>
                                                     <ul v-if="foods.attributes.length" class="attributes_ul">
                                                         <li v-for="(attribute, foodindex) in foods.attributes" :key="foodindex" :style="{color: '#' + attribute.icon_color,borderColor:'#' +attribute.icon_color}" :class="{attribute_new: attribute.icon_name == '新'}">
-                                                        <p :style="{color: attribute.icon_name == '新'? '#fff' : '#' + attribute.icon_color}">{{attribute.icon_name == '新'? '新品':attribute.icon_name}}</p>
+                                                        <p :style="{color: attribute.icon_name == '新'? '#fff' : '#' + attribute.icon_color}">{{attribute.icon_name == '新'? '新增':attribute.icon_name}}</p>
                                                         </li>
                                                     </ul>
 
                                                 </h3>
                                                 <p class="food_description_content">{{foods.description}}</p>
-                                                <p class="food_description_sale_rating">
+                                                <!-- <p class="food_description_sale_rating">
                                                     <span>月售{{foods.month_sales}}份</span>
                                                     <span>好评率{{foods.satisfy_rate}}%</span>
+                                                </p> -->
+                                                <p class="food_description_sale_rating">
+                                                    <span>2018年3月18日订阅过期</span>
                                                 </p>
-                                                <p v-if="foods.activity" class="food_activity">
+                                                <!-- <p v-if="foods.activity" class="food_activity">
                                                 <span :style="{color: '#' + foods.activity.image_text_color,borderColor:'#' +foods.activity.icon_color}">{{foods.activity.image_text}}</span>
-                                                </p>
+                                                </p> -->
                                             </section>
                                         </router-link>
-                                        <footer class="menu_detail_footer">
+                                        <!-- <footer class="menu_detail_footer">
                                             <section class="food_price">
                                                 <span>¥</span>
                                                 <span>{{foods.specfoods[0].price}}</span>
                                                 <span v-if="foods.specifications.length">起</span>
                                             </section>
                                             <buy-cart :shopId='shopId' :foods='foods' @moveInCart="listenInCart" @showChooseList="showChooseList" @showReduceTip="showReduceTip" @showMoveDot="showMoveDotFun"></buy-cart>
-                                        </footer>
+                                        </footer> -->
                                     </section>
                                 </li>
                             </ul>
                         </section>
                     </section>
-                    <section class="buy_cart_container">
+                    <foot-guide></foot-guide>
+                    <!-- <section class="buy_cart_container">
                         <section @click="toggleCartList" class="cart_icon_num">
                             <div class="cart_icon_container" :class="{cart_icon_activity: totalPrice > 0, move_in_cart:receiveInCart}" ref="cartContainer">
                                 <span v-if="totalNum" class="cart_list_length">
@@ -152,7 +162,7 @@
                             <span class="gotopay_button_style" v-if="minimumOrderAmount > 0">还差¥{{minimumOrderAmount}}起送</span>
                             <router-link :to="{path:'/confirmOrder', query:{geohash, shopId}}" class="gotopay_button_style" v-else >去结算</router-link>
                         </section>
-                    </section>
+                    </section> -->
                     <transition name="toggle-cart">
                         <section class="cart_food_list" v-show="showCartList&&cartFoodList.length">
                             <header>
@@ -324,6 +334,7 @@
     import {loadMore, getImgPath} from 'src/components/common/mixin'
     import {imgBaseUrl} from 'src/config/env'
     import BScroll from 'better-scroll'
+    import footGuide from '../../components/footer/footGuide'
 
     export default {
         data(){
@@ -382,6 +393,7 @@
             loading,
             ratingStar,
             buyCart,
+            footGuide,
         },
         computed: {
             ...mapState([
@@ -447,41 +459,41 @@
             },
             //获取食品列表的高度，存入shopListTop
             getFoodListHeight(){
-                const listContainer = this.$refs.menuFoodList;
-                const listArr = Array.from(listContainer.children[0].children);
-                listArr.forEach((item, index) => {
-                    this.shopListTop[index] = item.offsetTop;
-                });
-                this.listenScroll(listContainer)
+                // const listContainer = this.$refs.menuFoodList;
+                // const listArr = Array.from(listContainer.children[0].children);
+                // listArr.forEach((item, index) => {
+                //     this.shopListTop[index] = item.offsetTop;
+                // });
+                // this.listenScroll(listContainer)
             },
             //当滑动食品列表时，监听其scrollTop值来设置对应的食品列表标题的样式
             listenScroll(element){
-                this.foodScroll = new BScroll(element, {
-                    probeType: 3,
-                    deceleration: 0.001,
-                    bounce: false,
-                    swipeTime: 2000,
-                    click: true,
-                });
+                // this.foodScroll = new BScroll(element, {
+                //     probeType: 3,
+                //     deceleration: 0.001,
+                //     bounce: false,
+                //     swipeTime: 2000,
+                //     click: true,
+                // });
 
-                const wrapperMenu = new BScroll('#wrapper_menu', {
-                    click: true,
-                });
+                // const wrapperMenu = new BScroll('#wrapper_menu', {
+                //     click: true,
+                // });
 
-                const wrapMenuHeight = this.$refs.wrapperMenu.clientHeight;
-                this.foodScroll.on('scroll', (pos) => {
-                    if (!this.$refs.wrapperMenu) {
-                        return 
-                    }
-                    this.shopListTop.forEach((item, index) => {
-                        if (this.menuIndexChange && Math.abs(Math.round(pos.y)) >= item) {
-                            this.menuIndex = index;
-                            const menuList=this.$refs.wrapperMenu.querySelectorAll('.activity_menu');
-                            const el = menuList[0];
-                            wrapperMenu.scrollToElement(el, 800, 0, -(wrapMenuHeight/2 - 50));
-                        }
-                    })
-                })
+                // const wrapMenuHeight = this.$refs.wrapperMenu.clientHeight;
+                // this.foodScroll.on('scroll', (pos) => {
+                //     if (!this.$refs.wrapperMenu) {
+                //         return 
+                //     }
+                //     this.shopListTop.forEach((item, index) => {
+                //         if (this.menuIndexChange && Math.abs(Math.round(pos.y)) >= item) {
+                //             this.menuIndex = index;
+                //             const menuList=this.$refs.wrapperMenu.querySelectorAll('.activity_menu');
+                //             const el = menuList[0];
+                //             wrapperMenu.scrollToElement(el, 800, 0, -(wrapMenuHeight/2 - 50));
+                //         }
+                //     })
+                // })
             },
             //控制活动详情页的显示隐藏
             showActivitiesFun(){
@@ -769,12 +781,17 @@
         .description_header{
             position: relative;
             z-index: 10;
-            background-color: rgba(119,103,137,.43);
+            /*background-color: rgba(119,103,137,.43);*/
+            background:-moz-linear-gradient(left,#fa5c5d,#fcaf9b);/*Mozilla*/  
+            background:-webkit-gradient(linear,0 50%,100% 50%,from(#fa5c5d),to(#fcaf9b));/*Old gradient for webkit*/  
+            background:-webkit-linear-gradient(left,#fa5c5d,#fcaf9b);/*new gradient for Webkit*/  
+            background:-o-linear-gradient(left,#fa5c5d,#fcaf9b); /*Opera11*/ 
             padding: 0.4rem 0 0.4rem 0.4rem;
             width: 100%;
             overflow: hidden;
             .description_top{
                 display: flex;
+                margin-top:0.6rem;
                 .description_left{
                     margin-right: 0.3rem;
                     img{
@@ -786,14 +803,15 @@
                 .description_right{
                     flex: 1;
                     .description_title{
-                        @include sc(.8rem, #fff);
-                        font-weight: bold;
+                        @include sc(.7rem, #fff);
+                        /*font-weight: bold;*/
                         width: 100%;
-                        margin-bottom: 0.3rem;
+                        margin-top:0.5rem;
+                        /*margin-bottom: 0.3rem;*/
                     }
                     .description_text{
                         @include sc(.5rem, #fff);
-                        margin-bottom: 0.3rem;
+                        /*margin-bottom: 0.3rem;*/
                     }
                     .description_promotion{
                         @include sc(.5rem, #fff);
@@ -804,6 +822,23 @@
                     @include ct;
                     right: 0.3rem;
                     z-index: 11;
+                }
+                .shop_detail_vip{
+                    display: inline-block;
+                    color:#fff;
+                    font-size: 12px;
+                    line-height: 12px;
+                    padding:10px;
+                    padding-right:54px;
+                    margin-right:20px;
+                    margin-top:20px;
+
+                    background-color:#ff575f;
+                    @include bis('../../images/vip.jpg');
+                    background-size: 40px auto;
+                    background-position: 64px center;
+
+                    border-radius: 6px;
                 }
             }
             .description_footer{
@@ -1011,7 +1046,7 @@
                     .menu_food_img{
                         margin-right: .4rem;
                         img{
-                            @include wh(2rem, 2rem);
+                            @include wh(3rem, 3rem);
                             display: block;
                         }
                     }
@@ -1058,13 +1093,13 @@
                             }
                         }
                         .food_description_content{
-                            @include sc(.5rem, #999);
-                            line-height: .6rem;
+                            @include sc(.7rem, #969696);
+                            line-height: 1rem;
                         }
                         .food_description_sale_rating{
                             line-height: .8rem;
                             span{
-                                @include sc(.5rem, #333);
+                                @include sc(.5rem, #d5d5d5);
                             }
                         }
                         .food_activity{
@@ -1276,20 +1311,24 @@
     }
     .change_show_type{
         display: flex;
-        background-color: #fff;
+        /*background-color: #fff;*/
+        background:-moz-linear-gradient(left,#fa5c5d,#fcaf9b);/*Mozilla*/  
+        background:-webkit-gradient(linear,0 50%,100% 50%,from(#fa5c5d),to(#fcaf9b));/*Old gradient for webkit*/  
+        background:-webkit-linear-gradient(left,#fa5c5d,#fcaf9b);/*new gradient for Webkit*/  
+        background:-o-linear-gradient(left,#fa5c5d,#fcaf9b); /*Opera11*/ 
         padding: .3rem 0 .6rem;
         border-bottom: 1px solid #ebebeb;
         div{
             flex: 1;
             text-align: center;
             span{
-                @include sc(.65rem, #666);
+                @include sc(.65rem, #fac6bb);
                 padding: .2rem .1rem;
-                border-bottom: 0.12rem solid #fff;
+                border-bottom: 0rem solid #fff;
             }
             .activity_show{
-                color: #3190e8;
-                border-color: #3190e8;
+                color: #fff;
+                border-width:0.12rem;
             }
         }
     }
