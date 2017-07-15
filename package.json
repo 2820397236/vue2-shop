@@ -2,7 +2,7 @@
   "name": "elm",
   "version": "2.0.1",
   "description": "vue2-elm",
-  "author": "cangdu <1264889788@qq.com>",
+  "author": "Maji <249722824@qq.com>",
   "private": true,
   "license": "GPL",
   "scripts": {
@@ -16,6 +16,8 @@
     "iscroll": "^5.2.0",
     "showdown": "^1.6.4",
     "vue": "^2.1.0",
+    "vue-echarts": "^2.4.0",
+    "vue-echarts-v3": "^1.0.4",
     "vue-router": "^2.1.1",
     "vuex": "^2.0.0"
   },

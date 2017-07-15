@@ -1,7 +1,7 @@
  <template>
     <div class="rating_page">
-        <head-top head-title="在线支付" go-back='true'></head-top>
-        <section class="show_time_amount">
+        <head-top head-title="订单支付" go-back='true'></head-top>
+        <!-- <section class="show_time_amount">
         	<section>
                 <header class="time_last">支付剩余时间</header>
                 <p class="time">{{remaining}}</p>
@@ -10,34 +10,69 @@
                     <span>¥ {{cartPrice&&cartPrice.toFixed(2) || payDetail.resultData.orderInfo.orderAmount&&(payDetail.resultData.orderInfo.orderAmount/100).toFixed(2)}}</span>
                 </footer>   
             </section>
-        </section>
+        </section> -->
+        <div class="pay_way">支付详情</div>
+        <section class="pay_way_list">
+            <section class="pay_item order_item">
+                <div class="pay_icon_contaienr">
+                    <span>门店数量</span>
+                </div>
+                <div class="order_item_text">2</div>
+            </section>
+            <section class="pay_item order_item">
+                <div class="pay_icon_contaienr">
+                    <span>套餐时间</span>
+                </div>
+                <div class="order_item_text">
+                    连续包月
+                </div>
+            </section>
+            <section class="pay_item order_item">
+                <div class="pay_icon_contaienr">
+                    <span>支付日期</span>
+                </div>
+                <div class="order_item_text">
+                    2017-7-7
+                </div>
+            </section>
+            <section class="pay_item order_item">
+                <div class="pay_icon_contaienr">
+                    <span>支付金额</span>
+                </div>
+                <div class="order_item_text">
+                    ￥4元
+                </div>
+            </section>
+        </section> 
+
         <div class="pay_way">选择支付方式</div>
         <section class="pay_way_list">
-            <section class="pay_item">
+            <section class="pay_item"  @click="payWay = 1">
                 <div class="pay_icon_contaienr">
                     <div class="zhifubao">
                         
                     </div>
-                    <span>支付宝</span>
+                    <span>支付宝支付</span>
                 </div>
-                <svg class="choose_icon" @click="payWay = 1" :class="{choosed_way: payWay == 1}">
+                <svg class="choose_icon" :class="{choosed_way: payWay == 1}">
                     <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#select"></use>
                 </svg>
             </section>
-            <section class="pay_item">
+            <section class="pay_item"  @click="payWay = 2">
                 <div class="pay_icon_contaienr">
                     <svg>
                         <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#weixin"></use>
                     </svg>
-                    <span>微信</span>
+                    <span>微信支付</span>
                 </div>
-                <svg class="choose_icon" @click="payWay = 2" :class="{choosed_way: payWay == 2}">
+                <svg class="choose_icon" :class="{choosed_way: payWay == 2}">
                     <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#select"></use>
                 </svg>
             </section>
         </section>
-        <p class="determine" @click="confrimPay">确认支付</p>
-        <alert-tip v-if="showAlert" @closeTip="closeTipFun" :alertText="alertText"></alert-tip>
+
+        <p class="determine" @click="closeTipFun">确认支付</p>
+        <!-- <alert-tip v-if="showAlert" @closeTip="closeTipFun" :alertText="alertText"></alert-tip> -->
     </div>
 </template>
 
@@ -120,16 +155,16 @@
             },
             //确认付款
             confrimPay(){
-                this.showAlert = true;
+                this.showAlert = false;
                 this.alertText = '当前环境无法支付，请打开官方APP进行付款';
                 this.gotoOrders = true;
             },
             //关闭提示框，跳转到订单列表页
             closeTipFun(){
                 this.showAlert = false;
-                if (this.gotoOrders) {
-                    this.$router.push('/order');
-                }
+                // if (this.gotoOrders) {
+                    this.$router.push('/shop?id=2');
+                // }
             },
         }
     }
@@ -182,7 +217,15 @@
     }
     .pay_way_list{
         background-color: #fff;
+        
         .pay_item{
+            &.order_item{
+                padding: .2rem .7rem;
+                line-height: 1.6rem;
+                .order_item_text{
+                    @include sc(.6rem, #666);
+                }
+            }
             padding: .4rem .7rem;
             @include fj;
             align-items: center;
@@ -192,14 +235,14 @@
                 @include fj;
                 align-items: center;
                 .zhifubao{
-                    @include wh(2rem, 2rem);
+                    @include wh(1.4rem, 1.4rem);
                     background: url(../../../images/zhifubao.png) no-repeat;
                     background-size: 100% 100%;
-                    margin-right: .2rem;
+                    margin-right: .4rem;
                 }
                 svg{
-                    @include wh(2rem, 2rem);
-                    margin-right: .3rem;
+                    @include wh(1.4rem, 1.4rem);
+                    margin-right: .4rem;
                 }
                 span{
                     @include sc(.7rem, #666);
@@ -210,12 +253,12 @@
                 fill: #ccc;
             }
             .choosed_way{
-                fill: #4cd964;
+                fill: #fc3c3f;
             }
         }
     }
     .determine{
-        background-color: #4cd964;
+        background-color: #fc3c3f;
         @include sc(.7rem, #fff);
         text-align: center;
         margin: 0 .7rem;

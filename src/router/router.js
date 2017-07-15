@@ -45,6 +45,7 @@ const service = r => require.ensure([], () => r(require('../page/service/service
 const questionDetail = r => require.ensure([], () => r(require('../page/service/children/questionDetail')), 'questionDetail')
 const find = r => require.ensure([], () => r(require('../page/find/find')), 'find')
 const download = r => require.ensure([], () => r(require('../page/download/download')), 'download')
+const analytics = r => require.ensure([], () => r(require('../page/analytics/analytics')), 'analytics')
 
 
 
@@ -56,7 +57,7 @@ export default [{
         //地址为空时跳转home页面
         {
             path: '',
-            redirect: '/home'
+            redirect: '/shop'
         },
         //首页城市列表页
         {
@@ -249,6 +250,11 @@ export default [{
                 path: 'detail', //积分说明
                 component: pointsDetail,
             }, ]
+        },
+        //商铺详情页
+        {
+            path: '/analytics',
+            component: analytics,
         },
     ]
 }]

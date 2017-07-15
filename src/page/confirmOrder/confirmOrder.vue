@@ -1,8 +1,8 @@
 <template>
     <div class="confirmOrderContainer">
         <section v-if="!showLoading">
-            <head-top head-title="确认订单" goBack="true" signin-up='confirmOrder'></head-top>
-            <router-link :to='{path: "/confirmOrder/chooseAddress", query: {id: checkoutData.cart.id, sig: checkoutData.sig}}' class="address_container">
+            <head-top head-title="确认订阅门店" goBack="true"></head-top>
+            <!-- <router-link :to='{path: "/confirmOrder/chooseAddress", query: {id: checkoutData.cart.id, sig: checkoutData.sig}}' class="address_container">
                 <div class="address_empty_left">
                     <svg class="location_icon">
                         <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#location"></use>
@@ -23,30 +23,101 @@
                 <svg class="address_empty_right">
                     <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
                 </svg>
-            </router-link>
-            <section class="delivery_model container_style">
+            </router-link> -->
+            <!-- <section class="delivery_model container_style">
                 <p class="deliver_text">送达时间</p>
                 <section class="deliver_time">
                     <p>尽快送达 | 预计 {{checkoutData.delivery_reach_time}}</p>
                     <p v-if="checkoutData.cart.is_deliver_by_fengniao">蜂鸟专送</p>
                 </section>
+            </section> -->
+
+            
+            <section class="food_container">
+                <section class="menu_container">
+                    <section class="menu_right" ref="menuFoodList">
+                        <ul>
+                            <li>
+                                <section class="menu_detail_list">
+                                    <div class="menu_detail_link">
+                                        <section class="menu_food_img">
+                                            <img src="http://images.cangdu.org/15d318e796a7.png">
+                                        </section>
+                                        <section class="menu_food_description">
+                                            <h3 class="food_description_head">
+                                                <span class="description_foodname">西贝莜面村（上海百联川沙店）</span>
+                                            </h3>
+                                            <p class="food_description_content">川沙路5398号百联川沙购物...</p>
+                                        </section>
+                                        <section class="menu_action">
+                                        <svg class="address_empty_right">
+                                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cart-minus"></use>
+                                        </svg>
+                                        </section>
+                                    </div>
+                                </section>
+                            </li>
+
+                            <li>
+                                <section class="menu_detail_list">
+                                    <div class="menu_detail_link">
+                                        <section class="menu_food_img">
+                                            <img src="http://images.cangdu.org/15d318e796a7.png">
+                                        </section>
+                                        <section class="menu_food_description">
+                                            <h3 class="food_description_head">
+                                                <span class="description_foodname">西贝莜面村（上海保乐汇店）</span>
+                                            </h3>
+                                            <p class="food_description_content">宝杨路1569号宝乐汇生活时...</p>
+                                        </section>
+                                        <section class="menu_action">
+                                        <svg class="address_empty_right">
+                                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cart-minus"></use>
+                                        </svg>
+                                        </section>
+                                    </div>
+                                </section>
+                            </li>
+                        </ul>
+                    </section>
+                </section>
             </section>
+
+
             <section class="pay_way container_style">
                 <header class="header_style">
-                    <span>支付方式</span>
-                    <div class="more_type" @click="showPayWayFun">
+                    <span>选择订阅套餐</span>
+                    <!-- <div class="more_type" @click="showPayWayFun">
                         <span>在线支付</span>
                         <svg class="address_empty_right">
                             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
                         </svg>
-                    </div>
+                    </div> -->
                 </header>
-                <section class="hongbo">
+                <div class="choose_type_Container">
+                    <header>会员测试期，购买<span class="highlight">5折起</span></header>
+                    <ul>
+                        <li v-for="item in checkoutData.payments" :key="item.id" :class="{choose: payWayId == item.id}" 
+                        @click="choosePayWay(item.is_online_payment, item.id)">
+                            <span class="pay_way">
+                                {{item.name}}<br/>
+                                <span v-if="item.is_online_payment" class="pay_way_subtitle">{{item.description}}</span>
+                            </span>
+                            <span class="price_rrp">￥{{item.select_state*2}}/店</span>
+                            <span class="price_now">￥{{item.select_state}}/店</span>
+                            <div class="tri"></div>
+                            <svg class="address_empty_right" >
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#select"></use>
+                            </svg>
+                        </li>
+                    </ul>
+                </div>
+                <!-- <section class="hongbo">
                     <span>红包</span>
                     <span>暂时只在饿了么 APP 中支持</span>
-                </section>
+                </section> -->
             </section>
-            <section class="food_list">
+            <!-- <section class="food_list">
                 <header v-if="checkoutData.cart.restaurant_info">
                     <img :src="imgBaseUrl + checkoutData.cart.restaurant_info.image_path">
                     <span>{{checkoutData.cart.restaurant_info.name}}</span>
@@ -100,27 +171,16 @@
                         </svg>
                     </span>
                 </router-link>
+            </section> -->
+            <section class="confrim_order" @click="confrimOrder">
+                <p>总计 2 家门店，共计 ¥{{checkoutData.cart.total}}</p>
+                <p>确认订单</p>
             </section>
-            <section class="confrim_order">
-                <p>待支付 ¥{{checkoutData.cart.total}}</p>
-                <p @click="confrimOrder">确认下单</p>
-            </section>
-            <transition name="fade">
+            <!-- <transition name="fade">
                 <div class="cover" v-if="showPayWay" @click="showPayWayFun"></div>
-            </transition>
-            <transition name="slid_up">
-                <div class="choose_type_Container" v-if="showPayWay">
-                    <header>支付方式</header>
-                    <ul>
-                        <li v-for="item in checkoutData.payments" :key="item.id" :class="{choose: payWayId == item.id}">
-                            <span>{{item.name}}<span v-if="!item.is_online_payment">{{item.description}}</span></span>
-                            <svg class="address_empty_right" @click="choosePayWay(item.is_online_payment, item.id)">
-                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#select"></use>
-                            </svg>
-                        </li>
-                    </ul>
-                </div>
-            </transition>
+            </transition> -->
+            
+                
         </section>
         <loading v-if="showLoading"></loading>
         <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
@@ -168,10 +228,10 @@
                 this.initData();
                 this.SAVE_GEOHASH(this.geohash);
             }
-            if (!(this.userInfo && this.userInfo.user_id)) {
-                this.showAlert = true;
-                this.alertText = '您还没有登录';
-            }
+            // if (!(this.userInfo && this.userInfo.user_id)) {
+            //     this.showAlert = true;
+            //     this.alertText = '您还没有登录';
+            // }
         },
         components: {
             headTop,
@@ -223,6 +283,7 @@
                         })
                     })
                 })
+                console.log(newArr);
                 //检验订单是否满足条件
                 this.checkoutData = await checkout(this.geohash, [newArr], this.shopId);
                 this.SAVE_CART_ID_SIG({cart_id: this.checkoutData.cart.id, sig:  this.checkoutData.sig})
@@ -244,10 +305,10 @@
             },
             //选择付款方式
             choosePayWay(is_online_payment, id){
-                if (is_online_payment) {
-                    this.showPayWay = !this.showPayWay;
+                // if (is_online_payment) {
+                    // this.showPayWay = !this.showPayWay;
                     this.payWayId = id;
-                }
+                // }
             },
             //地址备注颜色
             iconColor(name){
@@ -259,28 +320,32 @@
             //确认订单
             async confrimOrder(){
                 //用户未登录时弹出提示框
-                if (!(this.userInfo && this.userInfo.user_id)) {
-                    this.showAlert = true;
-                    this.alertText = '请登录';
-                    return
-                    //未选择地址则提示
-                }else if(!this.choosedAddress){
-                    this.showAlert = true;
-                    this.alertText = '请添加一个收获地址';
-                    return
-                }
+                // if (!(this.userInfo && this.userInfo.user_id)) {
+                //     this.showAlert = true;
+                //     this.alertText = '请登录';
+                //     return
+                //     //未选择地址则提示
+                // }else if(!this.choosedAddress){
+                //     this.showAlert = true;
+                //     this.alertText = '请添加一个收获地址';
+                //     return
+                // }
                 //保存订单
-                this.SAVE_ORDER_PARAM({
-                    user_id: this.userInfo.user_id,
+                let param = {
+                    user_id: 2,//this.userInfo.user_id,
                     cart_id: this.checkoutData.cart.id,
-                    address_id: this.choosedAddress.id,
+                    address_id: 1,//this.choosedAddress.id || 1,
                     description: this.remarklist,
                     entities: this.checkoutData.cart.groups,
                     geohash: this.geohash,
                     sig: this.checkoutData.sig,
-                });
+                };
+                // window.alert(JSON.stringify(param));
+
+                this.SAVE_ORDER_PARAM(param);
                 //发送订单信息
-                let orderRes = await placeOrders(this.userInfo.user_id, this.checkoutData.cart.id, this.choosedAddress.id, this.remarklist, this.checkoutData.cart.groups, this.geohash, this.checkoutData.sig);
+                // let orderRes = await placeOrders(this.userInfo.user_id, this.checkoutData.cart.id, this.choosedAddress.id, this.remarklist, this.checkoutData.cart.groups, this.geohash, this.checkoutData.sig);
+                let orderRes = await placeOrders(2, this.checkoutData.cart.id, 1, this.remarklist, this.checkoutData.cart.groups, this.geohash, this.checkoutData.sig);
                 //第一次下单的手机号需要进行验证，否则直接下单成功
                 if (orderRes.need_validation) {
                     this.NEED_VALIDATION(orderRes);
@@ -301,10 +366,14 @@
     }
 
 </script>
-
+<style>
+body,html{
+    background-color:#fff!important;
+}
+</style>
 <style lang="scss" scoped>
     @import 'src/style/mixin';
-
+    
     .confirmOrderContainer{
         padding-top: 1.95rem;
         padding-bottom: 3rem;
@@ -365,10 +434,6 @@
             }
         }
     }
-    .address_empty_right{
-        @include wh(.6rem, .6rem);
-        fill: #999;
-    }
     .delivery_model{
         border-left: .2rem solid $blue;
         min-height: 4rem;
@@ -400,14 +465,14 @@
     .pay_way{
         .header_style{
             @include fj;
-            line-height: 2rem;
+            line-height: 1rem;
             span:nth-of-type(1){
-                @include sc(.7rem, #666);
+                @include sc(.7rem, #333);
             }
             .more_type{
                 span:nth-of-type(1){
                     @include sc(.6rem, #aaa);
-                    width: 10rem;
+                    /*width: 10rem;*/
                     display: inline-block;
                     text-align: right;
                     vertical-align: middle;
@@ -483,21 +548,26 @@
     .confrim_order{
         display: flex;
         position: fixed;
-        bottom: 0;
-        width: 100%;
+        bottom: 1rem;
+        left:0;
+        right:0;
         height: 2rem;
+        border-radius: .2rem;
+        margin:0 0.7rem;
+        background-color: #fc3c3f;
         p{
             line-height: 2rem;
             @include sc(.75rem, #fff);
+            border-radius: .2rem;
         }
         p:nth-of-type(1){
-            background-color: #3c3c3c;
+            background-color: #fc3c3f;
             flex: 5;
             padding-left: .7rem;
         }
         p:nth-of-type(2){
             flex: 2;
-            background-color: #56d176;
+            background-color: #fc3c3f;
             text-align: center;
         }
     }
@@ -513,36 +583,80 @@
     .choose_type_Container{
         min-height: 10rem;
         background-color: #fff;
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        z-index: 204;
+        
         header{
-            background-color: #fafafa;
-            @include sc(.7rem, #333);
-            text-align: center;
-            line-height: 2rem;
+            @include sc(.5rem, #858585);
+            text-align: left;
+            line-height: 1rem;
+            .highlight{
+                color:#ff6d40;
+            }
         }
         ul{
             li{
                 @include fj;
                 padding: 0 .7rem;
-                line-height: 2.5rem;
+                margin:.3rem 0;
+                line-height: 2.1rem;
                 align-items: center;
+                border-radius: .2rem;
+                position:relative;
+                border:0.025rem solid #e5e5e5;
                 span{
-                    @include sc(.7rem, #ccc);
+                    @include sc(.6rem, #ccc);
+                    margin-right:.2rem;
+                }
+                .pay_way{
+                    width:50%;
+                    color:#333;
+                    line-height: .8rem;
+                    .pay_way_subtitle{
+
+                        @include sc(.5rem, #ccc);
+                    }
+                }
+                .price_rrp{
+                    flex:1;
+                    text-align: center;
+                    text-decoration: line-through;
+                    @include sc(.6rem, #c1bcbb);
+
+                }
+                .price_now{
+                    flex:1;
+                    text-align: center;
+                    @include sc(.7rem, #fc3c3f);
                 }
                 svg{
                     @include wh(.8rem, .8rem);
-                    fill: #eee;
+                    fill: #fff;
+                    display: none;
+                }
+                .tri{
+                    position:absolute;
+                    top:0;
+                    right:0;
+                    width: 0;
+                    height: 0;
+                    border-style: solid;
+                    border-width: 0 38px 38px 0;
+                    border-color: transparent #ff6d40 transparent transparent;
+                    display: none;
                 }
             }
             .choose{
-                span{
-                    color: #333;
-                }
+                border:0.025rem solid #ff6d40;
+                background-color:#fff9f7;
+                overflow: hidden;
                 svg{
-                    fill: #4cd964;
+                    fill: #ff6d40;
+                    position:absolute;
+                    right:.06rem;
+                    top:.06rem;
+                    display: block;
+                }
+                .tri{
+                    display: block;
                 }
             }
         }
@@ -565,5 +679,239 @@
     .router-slid-enter, .router-slid-leave-active {
         transform: translate3d(2rem, 0, 0);
         opacity: 0;
+    }
+
+    .food_container{
+        display: flex;
+        flex: 1;
+    }
+    .menu_container{
+        display: flex;
+        flex: 1;
+        overflow-y: hidden;
+        position: relative;
+        .menu_left{
+            width: 3.8rem;
+            .menu_left_li{
+                padding: .7rem .3rem;
+                border-bottom: 0.025rem solid #ededed;
+                box-sizing: border-box;
+                border-left: 0.15rem solid #f8f8f8;
+                position: relative;
+                img{
+                    @include wh(.5rem, .6rem);
+                }
+                span{
+                    @include sc(.6rem, #666);
+                }
+                .category_num{
+                    position: absolute;
+                    top: .1rem;
+                    right: .1rem;
+                    background-color: #ff461d;
+                    line-height: .6rem;
+                    text-align: center;
+                    border-radius: 50%;
+                    border: 0.025rem solid #ff461d;
+                    min-width: .6rem;
+                    height: .6rem;
+                    @include sc(.5rem, #fff);
+                    font-family: Helvetica Neue,Tahoma,Arial;
+                }
+            }
+            .activity_menu{
+                border-left: 0.15rem solid #3190e8;
+                background-color: #fff;
+                span:nth-of-type(1){
+                    font-weight: bold;
+                }
+            }
+        }
+        .menu_right{
+            flex: 4;
+            overflow-y: auto;
+            background-color: #fff;
+            
+            .menu_detail_header{
+                width: 100%;
+                padding: .4rem;
+                position: relative;
+                @include fj;
+                align-items: center;
+                .menu_detail_header_left{
+                    width: 11rem;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    .menu_item_title{
+                        @include sc(.7rem, #666);
+                        font-weight: bold;
+                    }
+                    .menu_item_description{
+                        @include sc(.5rem, #999);
+                        width: 30%;
+                        overflow: hidden;
+                    }
+                }
+                .menu_detail_header_right{
+                    @include wh(.5rem, 1rem);
+                    display: block;
+                    @include bis('../../images/icon_point.png');
+                    background-size: 100% .4rem;
+                    background-position: left center;
+                }
+                .description_tip{
+                    background-color: #39373a;
+                    opacity: 0.95;
+                    @include sc(.5rem, #fff);
+                    position: absolute;
+                    top: 1.5rem;
+                    z-index: 14;
+                    width: 8rem;
+                    right: .2rem;
+                    padding: .5rem .4rem;
+                    border: 1px;
+                    border-radius: .2rem;
+                    span{
+                        color: #fff;
+                        line-height: .6rem;
+                        font-size: .55rem;
+                    }
+                }
+                .description_tip::after{
+                    content: '';
+                    position: absolute;
+                    @include wh(.4rem, .4rem);
+                    background-color: #39373a;
+                    top: -.5rem;
+                    right: .7rem;
+                    transform: rotate(-45deg) translateY(.41rem);
+                }
+            }
+            .menu_detail_list{
+                background-color: #fff;
+                margin: .6rem .4rem;
+                padding: 0 0 .6rem .4rem;
+                border-bottom: 1px solid #f8f8f8;
+                position: relative;
+                overflow: hidden;
+                .menu_detail_link{
+                    display:flex;
+                    .menu_food_img{
+                        margin-right: .4rem;
+                        img{
+                            @include wh(3rem, 3rem);
+                            display: block;
+                        }
+                    }
+                    .menu_food_description{
+                        display: flex;
+                        align-items: start;
+                        flex-direction: column;
+                        justify-content: center;
+                        width: 100%;
+                        flex:1;
+                        .food_description_head{
+                            @include fj;
+                            margin-bottom: .2rem;
+                            .description_foodname{
+                                @include sc(.7rem, #333);
+                            }
+                            .attributes_ul{
+                                display: flex;
+                                li{
+                                    font-size: .3rem;
+                                    height: .6rem;
+                                    line-height: .35rem;
+                                    padding: .1rem;
+                                    border: 1px solid #666;
+                                    border-radius: 0.3rem;
+                                    margin-right: .1rem;
+                                    transform: scale(.8);
+                                    p{
+                                        white-space: nowrap;
+                                    }
+                                }
+                                .attribute_new{
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    background-color: #4cd964;
+                                    @include wh(2rem, 2rem);
+                                    display: flex;
+                                    align-items: flex-end;
+                                    transform: rotate(-45deg) translate(-.1rem, -1.5rem);
+                                    border: none;
+                                    border-radius: 0;
+                                    p{
+                                        @include sc(.4rem, #fff);
+                                        text-align: center;
+                                        flex: 1;
+                                    }
+                                }
+                            }
+                        }
+                        .food_description_content{
+                            @include sc(.7rem, #969696);
+                            line-height: 1rem;
+                        }
+                        .food_description_sale_rating{
+                            line-height: .8rem;
+                            span{
+                                @include sc(.5rem, #d5d5d5);
+                            }
+                        }
+                        .food_activity{
+                            line-height: .4rem;
+                            span{
+                                font-size: .3rem;
+                                border: 1px solid currentColor;
+                                border-radius: 0.3rem;
+                                padding: .08rem;
+                                display: inline-block;
+                                transform: scale(.8);
+                                margin-left: -0.35rem;
+
+                            }
+                        }
+                    }
+
+
+                    .menu_action{
+                        /*@include wh(2rem, 100%);*/
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                    .address_empty_right{
+                        @include wh(1rem, 1rem);
+                        fill: #999;
+                        
+                    }
+                }
+                .menu_detail_footer{
+                    margin-left: 2.4rem;
+                    font-size: 0;
+                    margin-top: .3rem;
+                    @include fj;
+                    .food_price{
+                        span{
+                            font-family: 'Helvetica Neue',Tahoma,Arial;
+                        }
+                        span:nth-of-type(1){
+                            @include sc(.5rem, #f60);
+                            margin-right: .05rem;
+                        }
+                        span:nth-of-type(2){
+                            @include sc(.7rem, #f60);
+                            font-weight: bold;
+                            margin-right: .3rem;
+                        }
+                        span:nth-of-type(3){
+                            @include sc(.5rem, #666);
+                        }
+                    }
+                }
+            }
+        }
     }
 </style>
