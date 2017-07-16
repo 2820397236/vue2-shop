@@ -366,11 +366,7 @@
     }
 
 </script>
-<style>
-body,html{
-    background-color:#fff!important;
-}
-</style>
+
 <style lang="scss" scoped>
     @import 'src/style/mixin';
     
