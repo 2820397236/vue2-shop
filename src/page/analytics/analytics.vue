@@ -42,9 +42,9 @@
             <section class="chart_container" v-show="changeShowType =='full'">
                 <IEcharts :option="bar" :height="270" theme="customer" @ready="onReady" @click="onClick"></IEcharts>
             </section>
-            <section class="detail_container" v-show="changeShowType =='full'">
+           <!--  <section class="detail_container" v-show="changeShowType =='full'">
                 <input type="submit" name="button" class="search_submit" value="查看门店详细信息" @click="onClick">
-            </section>
+            </section> -->
             <section class="reply_container" v-show="changeShowType =='full'">
                <div class="reply_item">
                    <div class="reply_item_border">负面评论
