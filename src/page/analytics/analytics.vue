@@ -40,7 +40,7 @@
                 </div>
             </section>
             <section class="chart_container" v-show="changeShowType =='full'">
-                <IEcharts :option="bar" :height="300" theme="customer" @ready="onReady" @click="onClick"></IEcharts>
+                <IEcharts :option="bar" :height="270" theme="customer" @ready="onReady" @click="onClick"></IEcharts>
             </section>
             <section class="detail_container" v-show="changeShowType =='full'">
                 <input type="submit" name="button" class="search_submit" value="查看门店详细信息" @click="onClick">

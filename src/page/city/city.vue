@@ -2,20 +2,20 @@
   	<div class="city_container">
         
         <form class="city_form" v-on:submit.prevent>
-            <router-link to="/home" slot="changecity" class="change_city_right button_style">全国</router-link>
+            <router-link to="/home" slot="changecity" class="change_city_right button_style">上海</router-link>
             <input type="search" name="city" placeholder="西贝" class="city_input input_style" required v-model='inputVaule' @input='postpois'>
             <div class="head_back_left button_style" @click="$router.go(-1)">取消</div>
             <!-- <div>
                 <input type="submit" name="submit" class="city_submit input_style" @click='postpois' value="提交">
             </div> -->
         </form>
-        <header v-if="historytitle" class="pois_search_history">搜索历史</header>
+        <header v-if="historytitle" class="pois_search_history">共36,705,325条</header>
         <ul class="getpois_ul">
             <!-- <li v-for="(item, index) in placelist" @click='nextpage(index, item.geohash)' :key="index"> -->
-            <li v-for="(item, index) in placelist" :key="index" @click='nextpage(index, item.geohash)'>
-                <a class="add_icon" >
+            <li v-for="(item, index) in placelist" :key="index" @click='active(item)'>
+                <a class="add_icon" :class="{'active':item.active === true}">
                     <svg @touchstart="">
-                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cart-add"></use>
+                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#select"></use>
                     </svg>
                 </a>
                 <img src="http://images.cangdu.org/15d318e796a7.png">
@@ -105,6 +105,10 @@
                 this.ADD_CART({shopid: 2, category_id:2, item_id:2, food_id:1, name:'西贝莜面村（上海宝乐汇店）', price:1, specs:""});
                 this.$router.push({path:'/confirmOrder', query:{shopId:2,geohash}});
                 
+            },
+            active(item){
+                console.log(item);
+                item.active = !item.active;
             },
             clearAll(){
                 removeStore('placeHistory');
@@ -205,7 +209,7 @@
             text-align: center;
             padding: .5rem 0;
             img{
-                @include wh(3rem, 3rem);
+                @include wh(70px, 3rem);
             }
             .add_icon{
                 padding: 0 .4rem;
@@ -213,7 +217,12 @@
                     margin-top:1rem;
                     width:.85rem;
                     height:.85rem;
-                    fill: #fc3c3f;
+                    fill: #ccc;
+                }
+                &.active{
+                    svg{
+                        fill:#fc3c3f;
+                    }
                 }
             }
             .pois_detail{

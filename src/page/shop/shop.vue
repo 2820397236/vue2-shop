@@ -97,9 +97,9 @@
                                             </section>
                                             <section class="menu_food_description">
                                                 <h3 class="food_description_head">
-                                                    <span class="description_foodname">{{foods.name}}</span>
+                                                    <span class="description_foodname ellipsis">{{foods.name}}</span>
                                                 </h3>
-                                                <p class="food_description_content">{{foods.description}}</p>
+                                                <p class="food_description_content ellipsis">{{foods.description}}</p>
                                                 <p class="food_description_sale_rating">
                                                     <span>2018年3月18日订阅过期</span>
                                                 </p>
