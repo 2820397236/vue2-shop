@@ -196,6 +196,7 @@
     .getpois_ul{
         background-color: #fff;
         border-top: 1px solid $bc;
+        overflow: hidden;
         li{
             margin: 0 auto;
             border-bottom: 1px solid $bc;
