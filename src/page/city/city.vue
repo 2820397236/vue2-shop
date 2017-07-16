@@ -18,7 +18,7 @@
                         <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#select"></use>
                     </svg>
                 </a>
-                <img src="http://images.cangdu.org/15d318e796a7.png">
+                <img src="http://images.cangdu.org/15d4a7a730f14.png">
                 <div class="pois_detail">
                     <h4 class="pois_name ellipsis">{{item.name}}</h4>
                     <p class="pois_address ellipsis">{{item.address}}</p>
