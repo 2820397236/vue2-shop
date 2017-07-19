@@ -1,6 +1,8 @@
 import fetch from '../config/fetch'
 import {getStore} from '../config/mUtils'
 
+
+export const iMartGo = () => fetch('http://www.imartgo.com/getAllProducts',{},"POST","");
 /**
  * 获取首页默认地址
  */

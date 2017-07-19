@@ -16,8 +16,9 @@
     "iscroll": "^5.2.0",
     "showdown": "^1.6.4",
     "vue": "^2.1.0",
-    "vue-echarts": "^2.4.0",
+    "vue-awesome-swiper": "^2.5.4",
     "vue-echarts-v3": "^1.0.4",
+    "vue-numeric": "^1.5.5",
     "vue-router": "^2.1.1",
     "vuex": "^2.0.0"
   },

@@ -6,106 +6,66 @@
                     <polyline points="12,18 4,9 12,0" style="fill:none;stroke:rgb(255,255,255);stroke-width:3"/>
                 </svg>
             </nav> -->
-            <header class="shop_detail_header" ref="shopheader" :style="{zIndex: showActivities? '14':'10'}">
-                <!-- <img :src="imgBaseUrl + shopDetailData.image_path" class="header_cover_img"> -->
-                <section class="description_header" :class="menuList.length == 0?'empty':''">
-                    <router-link to="/shop/shopDetail" class="description_top">
-                        <section class="description_left" style="border-radius: 10rem;overflow: hidden;">
-                            <img :src="imgBaseUrl + shopDetailData.image_path">
-                        </section>
-                        <section class="description_right">
-                            <h4 class="description_title ellipsis">您好，<br/>{{shopDetailData.name}}</h4>
-                            <!-- <p class="description_text">商家配送／{{shopDetailData.order_lead_time}}分钟送达／配送费¥{{shopDetailData.float_delivery_fee}}</p>
-                            <p class="description_promotion ellipsis">公告：{{promotionInfo}}</p> -->
-                        </section>
-                        <section>
-                            <span class="shop_detail_vip">
-                                企业认证                            
-                            </span>
-                        </section>
-
-                        <!-- <svg width="14" height="14" xmlns="http://www.w3.org/2000/svg" version="1.1" class="description_arrow" >
-                            <path d="M0 0 L8 7 L0 14"  stroke="#fff" stroke-width="1" fill="none"/>
-                        </svg> -->
-                    </router-link>
-                    <!-- <footer class="description_footer" v-if="shopDetailData.activities.length" @click="showActivitiesFun">
-                        <p class="ellipsis">
-                            <span class="tip_icon" :style="{backgroundColor: '#' + shopDetailData.activities[0].icon_color, borderColor: '#' + shopDetailData.activities[0].icon_color}">{{shopDetailData.activities[0].icon_name}}</span>
-                            <span>{{shopDetailData.activities[0].description}}（APP专享）</span>
-                        </p>
-                        <p>{{shopDetailData.activities.length}}个活动</p>
-                        <svg class="footer_arrow">
-                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-left"></use>
-                        </svg>
-                    </footer> -->
-                    <router-link :to="{path:'/city/1'}" tag="div" class="search_container" v-if="menuList.length != 0">
-                        搜索并订阅更多店铺评论
-                    </router-link>
-
-                </section>
-            </header>
-            <transition name="fade">
-                <section class="activities_details" v-if="showActivities">
-                    <h2 class="activities_shoptitle">{{shopDetailData.name}}</h2>
-                    <h3 class="activities_ratingstar">
-                        <rating-star :rating='shopDetailData.rating'></rating-star>
-                    </h3>
-                    <section class="activities_list">
-                        <header class="activities_title_style"><span>优惠信息</span></header>
-                        <ul>
-                            <li v-for="item in shopDetailData.activities" :key="item.id">
-                                <span class="activities_icon" :style="{backgroundColor: '#' + item.icon_color, borderColor: '#' + item.icon_color}">{{item.icon_name}}</span>
-                                <span>{{item.description}}（APP专享）</span>
-                            </li>
-                        </ul>
-                    </section>
-                    <section class="activities_shopinfo">
-                        <header class="activities_title_style"><span>商家公告</span></header>
-                        <p>{{promotionInfo}}</p>
-                    </section>
-                    <svg width="60" height="60" class="close_activities" @click.stop="showActivitiesFun">
-                        <circle cx="30" cy="30" r="25" stroke="#555" stroke-width="1" fill="none"/>
-                        <line x1="22" y1="38" x2="38" y2="22" style="stroke:#999;stroke-width:2"/>
-                        <line x1="22" y1="22" x2="38" y2="38" style="stroke:#999;stroke-width:2"/>
-                    </svg>
-                </section>
-            </transition>
-            <!-- <section class="change_show_type" ref="chooseType">
+            
+            <head-top head-title="TRY & BUY" signinUp="user"></head-top>
+            
+            <section class="change_show_type" ref="chooseType">
                 <div>
-                    <span :class='{activity_show: changeShowType =="food"}' @click="changeShowType='food'">已订阅监测</span>
+                    <span :class='{activity_show: changeShowType =="food"}' @click="changeShowType='food'">Tops</span>
                 </div>
                 <div>
-                    <span :class='{activity_show: changeShowType =="rating"}' @click="changeShowType='rating'">暂停监测</span>
+                    <span :class='{activity_show: changeShowType =="rating"}' @click="changeShowType='rating'">KeySmart</span>
                 </div>
-            </section> -->
-            <section class="food_container emptyShop" v-if="menuList.length == 0">
-                <div class="start_button" @click = "gotoAddress('/city/1')">
-                    立即体验订阅评论监控
+                <div>
+                    <span :class='{activity_show: changeShowType =="Wallet"}' @click="changeShowType='Wallet'">Wallet</span>
                 </div>
             </section>
-            <transition name="fade-choose" v-if="menuList.length > 0">
-                <section v-show="changeShowType =='food'" class="food_container">
-                    <section class="menu_container" v-if="menuList.length > 0">
-                        <section class="menu_right" ref="menuFoodList">
-                            <ul>
-                                <li v-for="(item,index) in menuList" :key="index">
+            
+            <transition name="fade-choose">
 
-                                    <section v-for="(foods,foodindex) in item.foods" :key="foodindex" class="menu_detail_list">
-                                        <router-link  :to="{path: 'shop/foodDetail', query:{image_path:foods.image_path, description: foods.description, month_sales: foods.month_sales, name: foods.name, rating: foods.rating, rating_count: foods.rating_count, satisfy_rate: foods.satisfy_rate, foods, shopId}}" tag="div" class="menu_detail_link">
-                                            <section class="menu_food_img">
-                                                <img :src="imgBaseUrl + foods.image_path">
-                                            </section>
-                                            <section class="menu_food_description">
-                                                <h3 class="food_description_head">
-                                                    <span class="description_foodname ellipsis">{{foods.name}}</span>
-                                                </h3>
-                                                <p class="food_description_content ellipsis">{{foods.description}}</p>
-                                                <p class="food_description_sale_rating">
-                                                    <span>2018年3月18日订阅过期</span>
-                                                </p>
-                                            </section>
-                                        </router-link>
-                                    </section>
+                <section v-show="changeShowType =='food'" class="food_container">
+                   
+                    <section class="menu_container">
+
+                        <section class="menu_right" ref="menuFoodList">
+                            <section class="banner_container">
+                                <img src='../../images/banner.png'>
+                            </section>
+                            <section class="category_container swiper-inner">
+                                <swiper :options="swiperOption" ref="mySwiper">
+                                <!-- slides -->
+                                <swiper-slide>
+                                    <div class="swiper-item" style="background-image:url('/static/img/category_1.png')"></div>
+                                </swiper-slide>
+                                <swiper-slide>
+                                    <div class="swiper-item" style="background-image:url('/static/img/category_2.png')"></div>
+                                </swiper-slide>
+                                <swiper-slide>
+                                    <div class="swiper-item" style="background-image:url('/static/img/category_1.png')"></div>
+                                </swiper-slide>
+                                <swiper-slide>
+                                    <div class="swiper-item" style="background-image:url('/static/img/category_2.png')"></div>
+                                </swiper-slide>
+                                <!-- Optional controls -->
+                                <div class="swiper-pagination"  slot="pagination"></div>
+                                <!-- <div class="swiper-button-prev" slot="button-prev"></div>
+                                <div class="swiper-button-next" slot="button-next"></div>
+                                <div class="swiper-scrollbar"   slot="scrollbar"></div> -->
+                              </swiper>
+                            </section>
+                            <ul  class="menu_detail_list">
+                                <li v-for="(item,index) in imartgo.products" :key="index">
+
+                                    <div class="product_detail_link">
+                                        <section class="product_img">
+                                            <img :src="item.mainPicUrl">
+                                        </section>
+                                        <section class="product_description">
+                                            <vue-numeric :precision="2" currency="$" separator="," v-model="item.price" readOnlyClass="product_price"></vue-numeric>
+                                            <vue-numeric :precision="2" currency="$" separator="," v-model="item.rrpPrice" readOnlyClass="product_rrpPrice"></vue-numeric>
+                                        </section>
+                                    </div>
+
                                 </li>
                             </ul>
                         </section>
@@ -121,7 +81,7 @@
             </transition>
         </section>
 
-        <foot-guide v-if="menuList.length > 0"></foot-guide>
+        <foot-guide></foot-guide>
 
        <loading v-show="showLoading || loadRatings"></loading>
        <!-- <section class="animation_opactiy shop_back_svg_container" v-if="showLoading">
@@ -135,13 +95,17 @@
 
 <script>
     import {mapState, mapMutations} from 'vuex'
-    import {msiteAdress, shopDetails, foodMenu, getRatingList, ratingScores, ratingTags} from 'src/service/getData'
+    import {msiteAdress, shopDetails, foodMenu, getRatingList, ratingScores, ratingTags,iMartGo} from 'src/service/getData'
     import loading from 'src/components/common/loading'
     import buyCart from 'src/components/common/buyCart'
     import ratingStar from 'src/components/common/ratingStar'
     import {loadMore, getImgPath} from 'src/components/common/mixin'
     import {imgBaseUrl} from 'src/config/env'
     import BScroll from 'better-scroll'
+    import { swiper, swiperSlide } from 'vue-awesome-swiper'
+    import VueNumeric from 'vue-numeric'
+
+    import headTop from '../../components/header/head'
     import footGuide from '../../components/footer/footGuide'
 
     export default {
@@ -182,6 +146,22 @@
                 elBottom: 0, //当前点击加按钮在网页中的绝对left值
                 ratingScroll: null, //评论页Scroll
                 imgBaseUrl,
+
+                swiperOption: {
+                  pagination: '.swiper-pagination',
+                  effect: 'coverflow',
+                  grabCursor: true,
+                  centeredSlides: true,
+                  slidesPerView: 'auto',
+                  coverflow: {
+                      rotate: 50,
+                      stretch: 0,
+                      depth: 100,
+                      modifier: 1,
+                      slideShadows : true
+                  },
+                },
+                imartgo:null
             }
         },
         created(){
@@ -201,7 +181,11 @@
             loading,
             ratingStar,
             buyCart,
+            headTop,
             footGuide,
+            swiper,
+            swiperSlide,
+            VueNumeric
         },
         computed: {
             ...mapState([
@@ -245,24 +229,25 @@
             ]),
             //初始化时获取基本数据
             async initData(){
-                if (!this.latitude) {
-                    //获取位置信息
-                    let res = await msiteAdress(this.geohash);
-                    // 记录当前经度纬度进入vuex
-                    this.RECORD_ADDRESS(res);
-                }
-                //获取商铺信息
-                this.shopDetailData = await shopDetails(this.shopId, this.latitude, this.longitude);
-                //获取商铺食品列表
-                this.menuList = await foodMenu(this.shopId);
-                //评论列表
-                this.ratingList = await getRatingList(this.shopId, this.ratingOffset);
-                //商铺评论详情
-                this.ratingScoresData = await ratingScores(this.shopId);
-                //评论Tag列表
-                this.ratingTagsList = await ratingTags(this.shopId);
-                this.RECORD_SHOPDETAIL(this.shopDetailData)
+                // if (!this.latitude) {
+                //     //获取位置信息
+                //     let res = await msiteAdress(this.geohash);
+                //     // 记录当前经度纬度进入vuex
+                //     this.RECORD_ADDRESS(res);
+                // }
+                // //获取商铺信息
+                // this.shopDetailData = await shopDetails(this.shopId, this.latitude, this.longitude);
+                // //获取商铺食品列表
+                // this.menuList = await foodMenu(this.shopId);
+                // //评论列表
+                // this.ratingList = await getRatingList(this.shopId, this.ratingOffset);
+                // //商铺评论详情
+                // this.ratingScoresData = await ratingScores(this.shopId);
+                // //评论Tag列表
+                // this.ratingTagsList = await ratingTags(this.shopId);
+                // this.RECORD_SHOPDETAIL(this.shopDetailData)
                 //隐藏加载动画
+                this.imartgo = await iMartGo();
                 this.hideLoading();
             },
             gotoAddress(path){
@@ -592,11 +577,11 @@
         .description_header{
             position: relative;
             z-index: 10;
-            /*background-color: rgba(119,103,137,.43);*/
-            background:-moz-linear-gradient(bottom,#fc3c3f,#ff726f);/*Mozilla*/  
-            background:-webkit-gradient(linear,0 0%,100% 100%,from(#fc3c3f),to(#ff726f));/*Old gradient for webkit*/  
-            background:-webkit-linear-gradient(bottom,#fc3c3f,#ff726f);/*new gradient for Webkit*/  
-            background:-o-linear-gradient(bottom,#fc3c3f,#ff726f); /*Opera11*/ 
+            background-color: #152031;
+            /*background:-moz-linear-gradient(bottom,#fc3c3f,#ff726f);
+            background:-webkit-gradient(linear,0 0%,100% 100%,from(#fc3c3f),to(#ff726f));Old gradient for webkit  
+            background:-webkit-linear-gradient(bottom,#fc3c3f,#ff726f);
+            background:-o-linear-gradient(bottom,#fc3c3f,#ff726f);*/
             padding: 0.6rem 0.8rem 0.6rem 0.8rem;
             width: 100%;
             overflow: hidden;
@@ -776,216 +761,102 @@
         display: flex;
         flex: 1;
         padding-bottom: 2rem;
+        flex-direction: column;
+        background-color: #fafbfc;
     }
     .menu_container{
         display: flex;
         flex: 1;
         overflow-y: hidden;
         position: relative;
-        .menu_left{
-            width: 3.8rem;
-            .menu_left_li{
-                padding: .7rem .3rem;
-                border-bottom: 0.025rem solid #ededed;
-                box-sizing: border-box;
-                border-left: 0.15rem solid #f8f8f8;
-                position: relative;
-                img{
-                    @include wh(.5rem, .6rem);
-                }
-                span{
-                    @include sc(.6rem, #666);
-                }
-                .category_num{
-                    position: absolute;
-                    top: .1rem;
-                    right: .1rem;
-                    background-color: #ff461d;
-                    line-height: .6rem;
-                    text-align: center;
-                    border-radius: 50%;
-                    border: 0.025rem solid #ff461d;
-                    min-width: .6rem;
-                    height: .6rem;
-                    @include sc(.5rem, #fff);
-                    font-family: Helvetica Neue,Tahoma,Arial;
-                }
-            }
-            .activity_menu{
-                border-left: 0.15rem solid #3190e8;
-                background-color: #fff;
-                span:nth-of-type(1){
-                    font-weight: bold;
-                }
-            }
-        }
         .menu_right{
             flex: 4;
             overflow-y: auto;
             background-color: #fff;
             
-            .menu_detail_header{
-                width: 100%;
-                padding: .4rem;
-                position: relative;
-                @include fj;
-                align-items: center;
-                .menu_detail_header_left{
-                    width: 11rem;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    .menu_item_title{
-                        @include sc(.7rem, #666);
-                        font-weight: bold;
-                    }
-                    .menu_item_description{
-                        @include sc(.5rem, #999);
-                        width: 30%;
-                        overflow: hidden;
-                    }
-                }
-                .menu_detail_header_right{
-                    @include wh(.5rem, 1rem);
-                    display: block;
-                    @include bis('../../images/icon_point.png');
-                    background-size: 100% .4rem;
-                    background-position: left center;
-                }
-                .description_tip{
-                    background-color: #39373a;
-                    opacity: 0.95;
-                    @include sc(.5rem, #fff);
-                    position: absolute;
-                    top: 1.5rem;
-                    z-index: 14;
-                    width: 8rem;
-                    right: .2rem;
-                    padding: .5rem .4rem;
-                    border: 1px;
-                    border-radius: .2rem;
-                    span{
-                        color: #fff;
-                        line-height: .6rem;
-                        font-size: .55rem;
-                    }
-                }
-                .description_tip::after{
-                    content: '';
-                    position: absolute;
-                    @include wh(.4rem, .4rem);
-                    background-color: #39373a;
-                    top: -.5rem;
-                    right: .7rem;
-                    transform: rotate(-45deg) translateY(.41rem);
+            .banner_container{
+                img{
+                    width: 100%;
+                    margin: 0;
+                    padding:0;
                 }
             }
             .menu_detail_list{
-                background-color: #fff;
-                margin: .6rem .4rem;
-                padding: 0 0 .6rem .4rem;
-                border-bottom: 1px solid #f8f8f8;
-                position: relative;
-                overflow: hidden;
-                .menu_detail_link{
-                    display:flex;
-                    .menu_food_img{
-                        margin-right: .4rem;
-                        img{
-                            @include wh(3rem, 3rem);
-                            display: block;
-                        }
-                    }
-                    .menu_food_description{
-                        width: 100%;
-                        .food_description_head{
-                            @include fj;
-                            margin-bottom: .2rem;
-                            .description_foodname{
-                                @include sc(.7rem, #333);
-                            }
-                            .attributes_ul{
-                                display: flex;
-                                li{
-                                    font-size: .3rem;
-                                    height: .6rem;
-                                    line-height: .35rem;
-                                    padding: .1rem;
-                                    border: 1px solid #666;
-                                    border-radius: 0.3rem;
-                                    margin-right: .1rem;
-                                    transform: scale(.8);
-                                    p{
-                                        white-space: nowrap;
-                                    }
-                                }
-                                .attribute_new{
-                                    position: absolute;
-                                    top: 0;
-                                    left: 0;
-                                    background-color: #4cd964;
-                                    @include wh(2rem, 2rem);
-                                    display: flex;
-                                    align-items: flex-end;
-                                    transform: rotate(-45deg) translate(-.1rem, -1.5rem);
-                                    border: none;
-                                    border-radius: 0;
-                                    p{
-                                        @include sc(.4rem, #fff);
-                                        text-align: center;
-                                        flex: 1;
-                                    }
-                                }
-                            }
-                        }
-                        .food_description_content{
-                            @include sc(.7rem, #969696);
-                            line-height: 1rem;
-                        }
-                        .food_description_sale_rating{
-                            line-height: .8rem;
-                            span{
-                                @include sc(.5rem, #d5d5d5);
-                            }
-                        }
-                        .food_activity{
-                            line-height: .4rem;
-                            span{
-                                font-size: .3rem;
-                                border: 1px solid currentColor;
-                                border-radius: 0.3rem;
-                                padding: .08rem;
-                                display: inline-block;
-                                transform: scale(.8);
-                                margin-left: -0.35rem;
+                display: flex;
+                flex-flow: row wrap;
 
-                            }
+                li{
+                    width:49%;
+                    margin-right:2%;
+                    background-color: #fff;
+                    line-height: 1rem;
+                    
+                    &:nth-of-type(even){
+                        margin-right:0;
+                    };
+
+                    .product_detail_link{
+                        margin-bottom:1rem;
+
+                    }
+                    .product_img{
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width:100%;
+                        height:180px;
+                        overflow: hidden;
+
+                        img{
+                            width:auto;
+                            height:100%;
                         }
                     }
-                }
-                .menu_detail_footer{
-                    margin-left: 2.4rem;
-                    font-size: 0;
-                    margin-top: .3rem;
-                    @include fj;
-                    .food_price{
-                        span{
-                            font-family: 'Helvetica Neue',Tahoma,Arial;
+                    .product_description{
+                        display: flex;
+                        .product_price{
+                            margin-left:.5rem;
+                            font-weight:bold;
+                            display: inline;
+                            @include sc(.6rem, #ff5f22);
                         }
-                        span:nth-of-type(1){
-                            @include sc(.5rem, #f60);
-                            margin-right: .05rem;
+                        .product_rrpPrice{
+                            margin-left:.4rem;
+                            padding-left:0;
+                            /*font-weight:bold;*/
+                            display: inline-block;
+                            width:2.5rem;
+                            text-decoration: line-through;
+                            @include sc(.5rem, #b2b4c6);
                         }
-                        span:nth-of-type(2){
-                            @include sc(.7rem, #f60);
-                            font-weight: bold;
-                            margin-right: .3rem;
-                        }
-                        span:nth-of-type(3){
-                            @include sc(.5rem, #666);
+                        .product_stock{
+
                         }
                     }
                 }
             }
+            .swiper-inner {
+                width: 100%;
+            }
+            .swiper-slide {
+                width: 280px;
+                height: 200px;
+                .swiper-item{
+                    margin: 0 auto;
+                    width:200px;
+                    height:200px;
+                    border:0;
+                    @include bis('../../images/category_2.png');
+                    background-position: center;
+                    background-size: cover;
+                }
+            }
+            .category_container{
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+            }
+
         }
     }
     .buy_cart_container{
@@ -1156,20 +1027,20 @@
     }
     .change_show_type{
         display: flex;
-        /*background-color: #fff;*/
-        background:-moz-linear-gradient(left,#fa5c5d,#fcaf9b);/*Mozilla*/  
-        background:-webkit-gradient(linear,0 50%,100% 50%,from(#fa5c5d),to(#fcaf9b));/*Old gradient for webkit*/  
-        background:-webkit-linear-gradient(left,#fa5c5d,#fcaf9b);/*new gradient for Webkit*/  
-        background:-o-linear-gradient(left,#fa5c5d,#fcaf9b); /*Opera11*/ 
-        padding: .3rem 0 .6rem;
-        border-bottom: 1px solid #ebebeb;
+        background-color: #152031;
+        /*background:-moz-linear-gradient(left,#fa5c5d,#fcaf9b);
+        background:-webkit-gradient(linear,0 50%,100% 50%,from(#fa5c5d),to(#fcaf9b));
+        background:-webkit-linear-gradient(left,#fa5c5d,#fcaf9b);
+        background:-o-linear-gradient(left,#fa5c5d,#fcaf9b);*/ 
+        padding: 0 0 .25rem;
+        margin-top:1.95rem;
         div{
-            flex: 1;
+            padding:0 .8rem;
             text-align: center;
             span{
-                @include sc(.65rem, #fac6bb);
+                @include sc(.65rem, #6D7C93);
                 padding: .2rem .1rem;
-                border-bottom: 0rem solid #fff;
+                border-bottom: 0rem solid #2894FA;
             }
             .activity_show{
                 color: #fff;
@@ -1464,6 +1335,14 @@
         margin:14px 0 0 0;
         border-radius: 4px;
 
+    }
+    .swiper-container-3d{
+        .swiper-slide-shadow-left{
+            
+        }
+        .swiper-slide-shadow-right{
+            
+        }
     }
 
 </style>
